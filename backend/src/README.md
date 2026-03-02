@@ -14,3 +14,4 @@ Each layer has a single responsibility to improve maintainability and testing.
 - Client model
 - Client repository (PDO)
 - Client service (business logic)
+- Client controller (HTTP layer)
