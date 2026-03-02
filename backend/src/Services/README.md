@@ -11,3 +11,6 @@ They:
 - Expose use cases to controllers
 
 They do not contain persistence or presentation logic.
+
+## Current Services
+- `ClientService` – Handles client-related business logic
