@@ -13,3 +13,6 @@ The backend follows a simple layered architecture:
 - Repositories handle database access
 - Services contain business logic
 - Controllers manage request handling (to be implemented)
+
+## Entry Point
+All HTTP requests are handled through `public/index.php`, acting as a front controller and routing requests to the appropriate controllers.
