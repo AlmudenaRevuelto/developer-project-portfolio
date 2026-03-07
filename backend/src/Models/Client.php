@@ -1,6 +1,6 @@
 <?php
 
-class Client
+class Client implements JsonSerializable
 {
     private ?int $id;
     private string $name;
@@ -26,5 +26,14 @@ class Client
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
     }
 }

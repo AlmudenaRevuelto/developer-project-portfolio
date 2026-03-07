@@ -73,4 +73,19 @@ class ClientRepository
 
         return $stmt->execute([':id' => $id]);
     }
+
+    public function update(Client $client): bool
+    {
+        $query = "UPDATE clients SET name = :name, email = :email WHERE id = :id";
+
+        $stmt = $this->connection->prepare($query);
+
+        $stmt->execute([
+            'id' => $client->getId(),
+            'name' => $client->getName(),
+            'email' => $client->getEmail()
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
 }

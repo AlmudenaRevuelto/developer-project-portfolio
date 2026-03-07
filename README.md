@@ -18,3 +18,10 @@ Backend and frontend are separated for better maintainability.
 
 ## Backend Status
 The backend currently exposes basic client management endpoints using a custom PHP router and a layered architecture (Controller, Service, Repository).
+
+### API Features
+- Full CRUD for Clients
+- REST API architecture
+- Dockerized environment
+- MySQL persistence
+- Postman collection included

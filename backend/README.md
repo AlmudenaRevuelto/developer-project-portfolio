@@ -16,3 +16,13 @@ The backend follows a simple layered architecture:
 
 ## Entry Point
 All HTTP requests are handled through `public/index.php`, acting as a front controller and routing requests to the appropriate controllers.
+
+
+## Client Endpoints
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /clients | List all clients |
+| GET | /clients/{id} | Get client by id |
+| POST | /clients | Create client |
+| PUT | /clients/{id} | Update client |
+| DELETE | /clients/{id} | Delete client |

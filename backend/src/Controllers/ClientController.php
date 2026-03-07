@@ -41,12 +41,48 @@ class ClientController
 
         } catch (InvalidArgumentException $e) {
             $this->jsonResponse(['error' => $e->getMessage()], 400);
+
+        } catch (Throwable $e) {
+            $this->jsonResponse(['error' => 'Internal server error'], 500);
+        }
+    }
+
+    public function update(int $id, array $data): void
+    {
+        try {
+
+            $updated = $this->clientService->updateClient(
+                $id,
+                $data['name'] ?? null,
+                $data['email'] ?? null
+            );
+
+            if (!$updated) {
+                $this->jsonResponse(['error' => 'Client not found'], 404);
+                return;
+            }
+
+            $this->jsonResponse(['message' => 'Client updated']);
+
+        } catch (InvalidArgumentException $e) {
+
+            $this->jsonResponse(['error' => $e->getMessage()], 400);
+
+        } catch (Throwable $e) {
+
+            $this->jsonResponse(['error' => 'Internal server error'], 500);
         }
     }
 
     public function delete(int $id): void
     {
-        $this->clientService->deleteClient($id);
+        $deleted = $this->clientService->deleteClient($id);
+
+        if (!$deleted) {
+            $this->jsonResponse(['error' => 'Client not found'], 404);
+            return;
+        }
+
         $this->jsonResponse(['message' => 'Client deleted']);
     }
 

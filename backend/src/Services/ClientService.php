@@ -39,4 +39,25 @@ class ClientService
     {
         return $this->clientRepository->delete($id);
     }
+
+    public function updateClient(int $id, ?string $name, ?string $email): bool
+    {
+        if ($name !== null && trim($name) === '') {
+            throw new InvalidArgumentException('Client name cannot be empty');
+        }
+
+        $existingClient = $this->clientRepository->findById($id);
+
+        if (!$existingClient) {
+            return false;
+        }
+
+        $updatedClient = new Client(
+            $id,
+            $name ?? $existingClient->getName(),
+            $email ?? $existingClient->getEmail()
+        );
+
+        return $this->clientRepository->update($updatedClient);
+    }
 }
