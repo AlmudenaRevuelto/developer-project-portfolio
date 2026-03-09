@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../Repositories/ProjectRepository.php';
 require_once __DIR__ . '/../Repositories/ClientRepository.php';
+require_once __DIR__ . '/../Models/Project.php';
 
 class ProjectService
 {
@@ -25,26 +26,12 @@ class ProjectService
         return $this->projectRepository->findByClientId($clientId);
     }
 
+    /**
+     * @return Project[]
+     */
     public function getAllProjects(): array
     {
-        $rows = $this->projectRepository->findAllWithClient();
-
-        $projects = [];
-
-        foreach ($rows as $row) {
-            $projects[] = [
-                'id' => (int)$row['id'],
-                'name' => $row['name'],
-                'status' => $row['status'],
-                'created_at' => $row['created_at'],
-                'client' => [
-                    'id' => (int)$row['client_id'],
-                    'name' => $row['client_name']
-                ]
-            ];
-        }
-
-        return $projects;
+        return $this->projectRepository->findAllWithClient();
     }
 
     public function createProject(array $data): int
@@ -64,5 +51,48 @@ class ProjectService
         }
 
         return $this->projectRepository->create($data);
+    }
+
+    public function getProjectById(int $id): Project
+    {
+        $project = $this->projectRepository->findByIdWithClient($id);
+
+        if (!$project) {
+            throw new InvalidArgumentException('Project not found');
+        }
+
+        return $project;
+    }
+
+    public function updateProject(int $id, array $data): void
+    {
+        if (empty($data['name'])) {
+            throw new InvalidArgumentException('Project name is required');
+        }
+
+        if (!isset($data['status'])) {
+            throw new InvalidArgumentException('Project status is required');
+        }
+
+        $allowedStatus = ['active', 'finished'];
+
+        if (!in_array($data['status'], $allowedStatus)) {
+            throw new InvalidArgumentException('Invalid status value');
+        }
+
+        $updated = $this->projectRepository->update($id, $data);
+
+        if (!$updated) {
+            throw new InvalidArgumentException('Project not found');
+        }
+    }
+
+    public function deleteProject(int $id): void
+    {
+        $deleted = $this->projectRepository->delete($id);
+
+        if (!$deleted) {
+            throw new InvalidArgumentException('Project not found');
+        }
     }
 }

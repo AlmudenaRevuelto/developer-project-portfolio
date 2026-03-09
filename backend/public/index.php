@@ -9,7 +9,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // Normalizar trailing slash
 $uri = rtrim($uri, '/') ?: '/';
 
-$controller = new ClientController();
+$clientController = new ClientController();
 $projectController = new ProjectController();
 
 /*
@@ -20,52 +20,71 @@ $projectController = new ProjectController();
 
 // GET /clients
 if ($uri === '/clients' && $method === 'GET') {
-    $controller->list();
+    $clientController->index();
     return;
 }
 
 // GET /clients/{id}
 if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'GET') {
-    $controller->show((int) $matches[1]);
+    $clientController->show((int) $matches[1]);
     return;
 }
 
 // POST /clients
 if ($uri === '/clients' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $controller->create($data);
+    $clientController->store($data);
     return;
 }
 
 // DELETE /clients/{id}
 if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
-    $controller->delete((int) $matches[1]);
+    $clientController->destroy((int) $matches[1]);
     return;
 }
 
-// PUT /clients/{id}  (lo dejamos preparado)
+// PUT /clients/{id}
 if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $controller->update((int) $matches[1], $data);
+    $clientController->update((int) $matches[1], $data);
     return;
 }
 
 // GET /clients/{id}/projects
 if (preg_match('#^/clients/(\d+)/projects$#', $uri, $matches) && $method === 'GET') {
-    $projectController->listByClient((int) $matches[1]);
+    $projectController->indexByClient((int) $matches[1]);
     return;
 }
 
 // GET /projects
 if ($uri === '/projects' && $method === 'GET') {
-    $projectController->list();
+    $projectController->index();
     return;
 }
 
 // POST /projects
 if ($uri === '/projects' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $projectController->create($data);
+    $projectController->store($data);
+    return;
+}
+
+// GET /projects/{id}
+if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $projectController->show((int) $matches[1]);
+    return;
+}
+
+// PUT /projects/{id}
+if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'PUT') {
+    $data = json_decode(file_get_contents('php://input'), true) ?? [];
+    $projectController->update((int) $matches[1], $data);
+    return;
+}
+
+// DELETE /projects/{id}
+if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
+    $projectController->destroy((int) $matches[1]);
     return;
 }
 

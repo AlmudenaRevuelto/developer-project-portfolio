@@ -1,8 +1,9 @@
 <?php
 
+require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../Services/ClientService.php';
 
-class ClientController
+class ClientController extends BaseController
 {
     private ClientService $clientService;
 
@@ -11,7 +12,7 @@ class ClientController
         $this->clientService = new ClientService();
     }
 
-    public function list(): void
+    public function index(): void
     {
         $clients = $this->clientService->getAllClients();
         $this->jsonResponse($clients);
@@ -22,28 +23,28 @@ class ClientController
         $client = $this->clientService->getClientById($id);
 
         if (!$client) {
-            $this->jsonResponse(['error' => 'Client not found'], 404);
+            $this->errorResponse('Client not found', 404);
             return;
         }
 
         $this->jsonResponse($client);
     }
 
-    public function create(array $data): void
+    public function store(array $data): void
     {
         try {
             $this->clientService->createClient(
-                $data['name'] ?? '',
+                trim($data['name'] ?? ''),
                 $data['email'] ?? null
             );
 
             $this->jsonResponse(['message' => 'Client created'], 201);
 
         } catch (InvalidArgumentException $e) {
-            $this->jsonResponse(['error' => $e->getMessage()], 400);
+            $this->errorResponse($e->getMessage(), 400);
 
         } catch (Throwable $e) {
-            $this->jsonResponse(['error' => 'Internal server error'], 500);
+            $this->errorResponse('Internal server error', 500);
         }
     }
 
@@ -58,38 +59,29 @@ class ClientController
             );
 
             if (!$updated) {
-                $this->jsonResponse(['error' => 'Client not found'], 404);
+                $this->errorResponse('Client not found', 404);
                 return;
             }
 
             $this->jsonResponse(['message' => 'Client updated']);
 
         } catch (InvalidArgumentException $e) {
-
-            $this->jsonResponse(['error' => $e->getMessage()], 400);
-
+            $this->errorResponse($e->getMessage(), 400);
         } catch (Throwable $e) {
-
-            $this->jsonResponse(['error' => 'Internal server error'], 500);
+            $this->errorResponse('Internal server error', 500);
         }
     }
 
-    public function delete(int $id): void
+    public function destroy(int $id): void
     {
         $deleted = $this->clientService->deleteClient($id);
 
         if (!$deleted) {
-            $this->jsonResponse(['error' => 'Client not found'], 404);
+            $this->errorResponse('Client not found', 404);
             return;
         }
 
         $this->jsonResponse(['message' => 'Client deleted']);
     }
 
-    private function jsonResponse($data, int $status = 200): void
-    {
-        http_response_code($status);
-        header('Content-Type: application/json');
-        echo json_encode($data);
-    }
 }

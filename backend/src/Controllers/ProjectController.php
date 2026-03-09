@@ -1,8 +1,9 @@
 <?php
 
+require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../Services/ProjectService.php';
 
-class ProjectController
+class ProjectController extends BaseController
 {
     private ProjectService $projectService;
 
@@ -11,55 +12,62 @@ class ProjectController
         $this->projectService = new ProjectService();
     }
 
-    public function listByClient(int $clientId): void
+    public function indexByClient(int $clientId): void
     {
         try {
-
             $projects = $this->projectService->getProjectsByClient($clientId);
-
-            header('Content-Type: application/json');
-
-            echo json_encode($projects);
-
+            $this->jsonResponse($projects);
         } catch (InvalidArgumentException $e) {
-
-            http_response_code(404);
-
-            echo json_encode([
-                'error' => $e->getMessage()
-            ]);
+            $this->errorResponse($e->getMessage(), 404);
         }
     }
 
-    public function list(): void
+    public function index(): void
     {
         $projects = $this->projectService->getAllProjects();
-
-        header('Content-Type: application/json');
-
-        echo json_encode($projects);
+        $this->jsonResponse($projects);
     }
 
-    public function create(array $data): void
+    public function store(array $data): void
     {
         try {
-
             $id = $this->projectService->createProject($data);
-
-            http_response_code(201);
-
-            echo json_encode([
+            $this->jsonResponse([
                 'message' => 'Project created',
                 'id' => $id
-            ]);
-
+            ], 201);
         } catch (InvalidArgumentException $e) {
+            $this->errorResponse($e->getMessage(), 400);
+        }
+    }
 
-            http_response_code(400);
+    public function show(int $id): void
+    {
+        try {
+            $project = $this->projectService->getProjectById($id);
+            $this->jsonResponse($project);
+        } catch (InvalidArgumentException $e) {
+            $this->errorResponse($e->getMessage(), 404);
+        }
+    }
 
-            echo json_encode([
-                'error' => $e->getMessage()
-            ]);
+    public function update(int $id, array $data): void
+    {
+        try {
+            $this->projectService->updateProject($id, $data);
+            $this->jsonResponse(['message' => 'Project updated']);
+        } catch (InvalidArgumentException $e) {
+            $this->errorResponse($e->getMessage(), 400);
+        }
+    }
+
+    public function destroy(int $id): void
+    {
+        try {
+            $this->projectService->deleteProject($id);
+            $this->jsonResponse(['message' => 'Project deleted']);
+        } catch (InvalidArgumentException $e) {
+            $this->errorResponse($e->getMessage(), 404);
         }
     }
 }

@@ -30,6 +30,8 @@ All HTTP requests are handled through `public/index.php`, acting as a front cont
 ## Project Endpoints
 | Method | Endpoint | Description |
 |------|------|------|
-| GET | /projects | List projects with client information |
+| GET | /projects | List projects with client info |
+| GET | /projects/{id} | Get project by id |
 | POST | /projects | Create project |
 | GET | /clients/{id}/projects | List projects for a client |
+| PUT | /projects/{id} | Update project |
