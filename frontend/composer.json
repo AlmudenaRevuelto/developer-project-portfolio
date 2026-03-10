@@ -1,0 +1,19 @@
+{
+    "name": "client-project-manager/frontend",
+    "description": "Frontend MVC with Twig",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "ClientProjectManager\\Frontend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Almudena Revuelto"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "twig/twig": "^3.23"
+    }
+}

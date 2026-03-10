@@ -6,6 +6,11 @@ require_once __DIR__ . '/../src/Controllers/ProjectController.php';
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+// quitar prefijo /api si existe
+if (str_starts_with($uri, '/api')) {
+    $uri = substr($uri, 4);
+}
+
 // Normalizar trailing slash
 $uri = rtrim($uri, '/') ?: '/';
 
