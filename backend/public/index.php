@@ -1,103 +1,48 @@
 <?php
 
-require_once __DIR__ . '/../src/Controllers/ClientController.php';
-require_once __DIR__ . '/../src/Controllers/ProjectController.php';
+require_once __DIR__ . '/../src/Router/Router.php';
+require_once __DIR__ . '/../src/Controller/ClientController.php';
+require_once __DIR__ . '/../src/Controller/ProjectController.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// quitar prefijo /api si existe
+// quitar prefijo /api
 if (str_starts_with($uri, '/api')) {
     $uri = substr($uri, 4);
 }
 
-// Normalizar trailing slash
 $uri = rtrim($uri, '/') ?: '/';
+
+$router = new Router();
 
 $clientController = new ClientController();
 $projectController = new ProjectController();
 
 /*
 |--------------------------------------------------------------------------
-| Clients Routes
+| Client Routes
 |--------------------------------------------------------------------------
 */
 
-// GET /clients
-if ($uri === '/clients' && $method === 'GET') {
-    $clientController->index();
-    return;
-}
+$router->add('GET', '/clients', [$clientController, 'index']);
+$router->add('GET', '/clients/{id}', [$clientController, 'show']);
+$router->add('POST', '/clients', [$clientController, 'store']);
+$router->add('PUT', '/clients/{id}', [$clientController, 'update']);
+$router->add('DELETE', '/clients/{id}', [$clientController, 'destroy']);
 
-// GET /clients/{id}
-if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'GET') {
-    $clientController->show((int) $matches[1]);
-    return;
-}
+$router->add('GET', '/clients/{id}/projects', [$projectController, 'indexByClient']);
 
-// POST /clients
-if ($uri === '/clients' && $method === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $clientController->store($data);
-    return;
-}
+/*
+|--------------------------------------------------------------------------
+| Project Routes
+|--------------------------------------------------------------------------
+*/
 
-// DELETE /clients/{id}
-if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
-    $clientController->destroy((int) $matches[1]);
-    return;
-}
+$router->add('GET', '/projects', [$projectController, 'index']);
+$router->add('GET', '/projects/{id}', [$projectController, 'show']);
+$router->add('POST', '/projects', [$projectController, 'store']);
+$router->add('PUT', '/projects/{id}', [$projectController, 'update']);
+$router->add('DELETE', '/projects/{id}', [$projectController, 'destroy']);
 
-// PUT /clients/{id}
-if (preg_match('#^/clients/(\d+)$#', $uri, $matches) && $method === 'PUT') {
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $clientController->update((int) $matches[1], $data);
-    return;
-}
-
-// GET /clients/{id}/projects
-if (preg_match('#^/clients/(\d+)/projects$#', $uri, $matches) && $method === 'GET') {
-    $projectController->indexByClient((int) $matches[1]);
-    return;
-}
-
-// GET /projects
-if ($uri === '/projects' && $method === 'GET') {
-    $projectController->index();
-    return;
-}
-
-// POST /projects
-if ($uri === '/projects' && $method === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $projectController->store($data);
-    return;
-}
-
-// GET /projects/{id}
-if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'GET') {
-    $projectController->show((int) $matches[1]);
-    return;
-}
-
-// PUT /projects/{id}
-if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'PUT') {
-    $data = json_decode(file_get_contents('php://input'), true) ?? [];
-    $projectController->update((int) $matches[1], $data);
-    return;
-}
-
-// DELETE /projects/{id}
-if (preg_match('#^/projects/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
-    $projectController->destroy((int) $matches[1]);
-    return;
-}
-
-// Fallback
-http_response_code(404);
-header('Content-Type: application/json');
-echo json_encode([
-    'error' => 'Route not found',
-    'path' => $uri,
-    'method' => $method
-]);
+$router->dispatch($method, $uri);

@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../Repositories/ClientRepository.php';
-require_once __DIR__ . '/../Models/Client.php';
+require_once __DIR__ . '/../Repository/ClientRepository.php';
+require_once __DIR__ . '/../Model/Client.php';
 
 class ClientService
 {
@@ -20,11 +20,24 @@ class ClientService
         return $this->clientRepository->findAll();
     }
 
+    /**
+     * Get a client by its ID.
+     *
+     * @param int $id
+     * @return Client|null
+     */
     public function getClientById(int $id): ?Client
     {
         return $this->clientRepository->findById($id);
     }
 
+    /**
+     * Create a new client.
+     *
+     * @param string $name
+     * @param string|null $email
+     * @return bool
+     */
     public function createClient(string $name, ?string $email): bool
     {
         if (empty($name)) {
@@ -35,11 +48,25 @@ class ClientService
         return $this->clientRepository->create($client);
     }
 
+    /**
+     * Delete a client by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
     public function deleteClient(int $id): bool
     {
         return $this->clientRepository->delete($id);
     }
 
+    /**
+     * Update an existing client.
+     *
+     * @param int $id
+     * @param string|null $name
+     * @param string|null $email
+     * @return bool
+     */
     public function updateClient(int $id, ?string $name, ?string $email): bool
     {
         if ($name !== null && trim($name) === '') {

@@ -1,37 +1,7 @@
-# Backend
+Backend REST API for the Dev Portfolio project.
 
-PHP backend for the Client & Project Manager application.
+Responsibilities:
 
-## Structure
-- `config/` – Configuration files (database connection, environment)
-- `src/` – Application source code
-- `public/` – Entry point for HTTP requests (future API)
-
-## Architecture
-The backend follows a simple layered architecture:
-- Models represent domain entities
-- Repositories handle database access
-- Services contain business logic
-- Controllers manage request handling (to be implemented)
-
-## Entry Point
-All HTTP requests are handled through `public/index.php`, acting as a front controller and routing requests to the appropriate controllers.
-
-
-## Client Endpoints
-| Method | Endpoint | Description |
-|------|------|------|
-| GET | /clients | List all clients |
-| GET | /clients/{id} | Get client by id |
-| POST | /clients | Create client |
-| PUT | /clients/{id} | Update client |
-| DELETE | /clients/{id} | Delete client |
-
-## Project Endpoints
-| Method | Endpoint | Description |
-|------|------|------|
-| GET | /projects | List projects with client info |
-| GET | /projects/{id} | Get project by id |
-| POST | /projects | Create project |
-| GET | /clients/{id}/projects | List projects for a client |
-| PUT | /projects/{id} | Update project |
+- Expose API endpoints
+- Handle business logic
+- Communicate with the database

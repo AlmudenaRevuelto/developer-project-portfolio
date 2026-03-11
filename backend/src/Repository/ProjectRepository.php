@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../Models/Project.php';
-require_once __DIR__ . '/../Models/Client.php';
+require_once __DIR__ . '/../Model/Project.php';
+require_once __DIR__ . '/../Model/Client.php';
 require_once __DIR__ . '/../../config/database.php';
 
 class ProjectRepository
@@ -73,21 +73,37 @@ class ProjectRepository
         return $projects;
     }
 
-    public function create(array $data): int
+    /**
+     * Insert a new project record.
+     *
+     * @param Project $project
+     * @return bool
+     */
+    public function create(Project $project): bool
     {
-        $query = "INSERT INTO projects (client_id, name, status) VALUES (:client_id, :name, :status)";
+        $sql = "INSERT INTO projects (client_id, name, status)
+                VALUES (:client_id, :name, :status)";
 
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->connection->prepare($sql);
 
-        $stmt->execute([
-            'client_id' => $data['client_id'],
-            'name' => $data['name'],
-            'status' => $data['status'] ?? 'active'
+        $client = $project->getClient();
+        if (!$client) {
+            throw new InvalidArgumentException('Project must have a client');
+        }
+
+        return $stmt->execute([
+            'client_id' => $client->getId(),
+            'name' => $project->getName(),
+            'status' => $project->getStatus()
         ]);
-
-        return (int)$this->connection->lastInsertId();
     }
 
+    /**
+     * Find a project by ID including its client data.
+     *
+     * @param int $id
+     * @return Project|null
+     */
     public function findByIdWithClient(int $id): ?Project
     {
         $query = "SELECT p.id, p.name, p.status, p.created_at, c.id AS client_id, c.name AS client_name, c.email AS client_email 
@@ -120,6 +136,13 @@ class ProjectRepository
         );
     }
 
+    /**
+     * Update project name and status.
+     *
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
     public function update(int $id, array $data): bool
     {
         $query = "UPDATE projects SET name = :name, status = :status WHERE id = :id";
@@ -135,6 +158,12 @@ class ProjectRepository
         return $stmt->rowCount() > 0;
     }
 
+    /**
+     * Delete a project record.
+     *
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $query = "DELETE FROM projects WHERE id = :id";

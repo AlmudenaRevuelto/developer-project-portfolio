@@ -3,7 +3,7 @@
 class Database
 {
     private string $host = 'db';
-    private string $dbName = 'client_project_manager';
+    private string $dbName = 'developer_project_portfolio';
     private string $username = 'root';
     private string $password = 'root';
 

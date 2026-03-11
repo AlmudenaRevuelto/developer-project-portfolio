@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Services/ClientService.php';
+require_once __DIR__ . '/../Service/ClientService.php';
 
 class ClientController extends BaseController
 {
@@ -12,12 +12,18 @@ class ClientController extends BaseController
         $this->clientService = new ClientService();
     }
 
+    /**
+     * Return a list of all clients.
+     */
     public function index(): void
     {
         $clients = $this->clientService->getAllClients();
         $this->jsonResponse($clients);
     }
 
+    /**
+     * Return a client by its ID.
+     */
     public function show(int $id): void
     {
         $client = $this->clientService->getClientById($id);
@@ -30,26 +36,27 @@ class ClientController extends BaseController
         $this->jsonResponse($client);
     }
 
-    public function store(array $data): void
+    /**
+     * Create a new client using JSON request body.
+     */
+    public function store(): void
     {
-        try {
-            $this->clientService->createClient(
-                trim($data['name'] ?? ''),
-                $data['email'] ?? null
-            );
+        $data = $this->getJsonInput();
 
-            $this->jsonResponse(['message' => 'Client created'], 201);
+        $this->clientService->createClient(
+            trim($data['name'] ?? ''),
+            $data['email'] ?? null
+        );
 
-        } catch (InvalidArgumentException $e) {
-            $this->errorResponse($e->getMessage(), 400);
-
-        } catch (Throwable $e) {
-            $this->errorResponse('Internal server error', 500);
-        }
+        $this->jsonResponse(['message' => 'Client created'], 201);
     }
 
-    public function update(int $id, array $data): void
+    /**
+     * Update an existing client.
+     */
+    public function update(int $id): void
     {
+        $data = $this->getJsonInput();
         try {
 
             $updated = $this->clientService->updateClient(
@@ -72,6 +79,9 @@ class ClientController extends BaseController
         }
     }
 
+    /**
+     * Delete a client by its ID.
+     */
     public function destroy(int $id): void
     {
         $deleted = $this->clientService->deleteClient($id);

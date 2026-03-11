@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../Repositories/ProjectRepository.php';
-require_once __DIR__ . '/../Repositories/ClientRepository.php';
-require_once __DIR__ . '/../Models/Project.php';
+require_once __DIR__ . '/../Repository/ProjectRepository.php';
+require_once __DIR__ . '/../Repository/ClientRepository.php';
+require_once __DIR__ . '/../Model/Project.php';
 
 class ProjectService
 {
@@ -15,6 +15,12 @@ class ProjectService
         $this->clientRepository = new ClientRepository();
     }
 
+    /**
+     * Return projects that belong to a specific client.
+     *
+     * @param int $clientId
+     * @return Project[]
+     */
     public function getProjectsByClient(int $clientId): array
     {
         $client = $this->clientRepository->findById($clientId);
@@ -34,7 +40,15 @@ class ProjectService
         return $this->projectRepository->findAllWithClient();
     }
 
-    public function createProject(array $data): int
+    /**
+     * Validate payload and create a new project.
+     *
+     * Expected keys in $data: name, client_id, status (optional).
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function createProject(array $data): bool
     {
         if (empty($data['name'])) {
             throw new InvalidArgumentException('Project name is required');
@@ -44,15 +58,35 @@ class ProjectService
             throw new InvalidArgumentException('client_id is required');
         }
 
-        $client = $this->clientRepository->findById($data['client_id']);
-
+        $client = $this->clientRepository->findById((int) $data['client_id']);
         if (!$client) {
             throw new InvalidArgumentException('Client not found');
         }
 
-        return $this->projectRepository->create($data);
+        $status = $data['status'] ?? 'active';
+        $allowedStatus = ['active', 'finished'];
+
+        if (!in_array($status, $allowedStatus, true)) {
+            throw new InvalidArgumentException('Invalid status value');
+        }
+
+        $project = new Project(
+            null,
+            $data['name'],
+            $status,
+            null,
+            $client
+        );
+
+        return $this->projectRepository->create($project);
     }
 
+    /**
+     * Retrieve a project by ID (includes client data).
+     *
+     * @param int $id
+     * @return Project
+     */
     public function getProjectById(int $id): Project
     {
         $project = $this->projectRepository->findByIdWithClient($id);
@@ -64,6 +98,12 @@ class ProjectService
         return $project;
     }
 
+    /**
+     * Update a project.
+     *
+     * @param int $id
+     * @param array $data
+     */
     public function updateProject(int $id, array $data): void
     {
         if (empty($data['name'])) {
@@ -87,6 +127,11 @@ class ProjectService
         }
     }
 
+    /**
+     * Delete a project by ID.
+     *
+     * @param int $id
+     */
     public function deleteProject(int $id): void
     {
         $deleted = $this->projectRepository->delete($id);

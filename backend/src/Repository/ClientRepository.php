@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../Models/Client.php';
+require_once __DIR__ . '/../Model/Client.php';
 require_once __DIR__ . '/../../config/database.php';
 
 class ClientRepository
@@ -14,6 +14,8 @@ class ClientRepository
     }
 
     /**
+     * Return all clients.
+     *
      * @return Client[]
      */
     public function findAll(): array
@@ -35,6 +37,12 @@ class ClientRepository
         return $clients;
     }
 
+    /**
+     * Find a client by ID.
+     *
+     * @param int $id
+     * @return Client|null
+     */
     public function findById(int $id): ?Client
     {
         $query = "SELECT * FROM clients WHERE id = :id LIMIT 1";
@@ -55,6 +63,12 @@ class ClientRepository
         );
     }
 
+    /**
+     * Insert a new client record.
+     *
+     * @param Client $client
+     * @return bool
+     */
     public function create(Client $client): bool
     {
         $query = "INSERT INTO clients (name, email) VALUES (:name, :email)";
@@ -66,6 +80,12 @@ class ClientRepository
         ]);
     }
 
+    /**
+     * Delete a client by ID.
+     *
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         $query = "DELETE FROM clients WHERE id = :id";
@@ -74,6 +94,12 @@ class ClientRepository
         return $stmt->execute([':id' => $id]);
     }
 
+    /**
+     * Update an existing client record.
+     *
+     * @param Client $client
+     * @return bool
+     */
     public function update(Client $client): bool
     {
         $query = "UPDATE clients SET name = :name, email = :email WHERE id = :id";

@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Services/ProjectService.php';
+require_once __DIR__ . '/../Service/ProjectService.php';
 
 class ProjectController extends BaseController
 {
@@ -12,6 +12,9 @@ class ProjectController extends BaseController
         $this->projectService = new ProjectService();
     }
 
+    /**
+     * Return list of projects belonging to a specific client.
+     */
     public function indexByClient(int $clientId): void
     {
         try {
@@ -22,25 +25,35 @@ class ProjectController extends BaseController
         }
     }
 
+    /**
+     * Return all projects (including client data).
+     */
     public function index(): void
     {
         $projects = $this->projectService->getAllProjects();
         $this->jsonResponse($projects);
     }
 
-    public function store(array $data): void
+    /**
+     * Create a new project from the request JSON body.
+     */
+    public function store(): void
     {
+        $data = $this->getJsonInput();
+
         try {
-            $id = $this->projectService->createProject($data);
-            $this->jsonResponse([
-                'message' => 'Project created',
-                'id' => $id
-            ], 201);
+            $this->projectService->createProject($data);
+
+            $this->jsonResponse(['message' => 'Project created'], 201);
+
         } catch (InvalidArgumentException $e) {
             $this->errorResponse($e->getMessage(), 400);
         }
     }
 
+    /**
+     * Return a single project by its ID.
+     */
     public function show(int $id): void
     {
         try {
@@ -51,8 +64,12 @@ class ProjectController extends BaseController
         }
     }
 
-    public function update(int $id, array $data): void
+    /**
+     * Update a project by ID using the request JSON body.
+     */
+    public function update(int $id): void
     {
+        $data = $this->getJsonInput();
         try {
             $this->projectService->updateProject($id, $data);
             $this->jsonResponse(['message' => 'Project updated']);
@@ -61,6 +78,9 @@ class ProjectController extends BaseController
         }
     }
 
+    /**
+     * Delete a project by its ID.
+     */
     public function destroy(int $id): void
     {
         try {

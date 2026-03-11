@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: client_manager_app
+    container_name: developer_project_app
     volumes:
       - .:/var/www/html
       - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
@@ -18,11 +18,11 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: client_manager_db
+    container_name: developer_project_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: client_project_manager
+      MYSQL_DATABASE: developer_project_portfolio
     ports:
       - "3307:3306"
     volumes:
@@ -33,7 +33,7 @@ services:
       - app-network
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: client_manager_phpmyadmin
+    container_name: developer_project_phpmyadmin
     restart: always
     ports:
       - "8081:80"

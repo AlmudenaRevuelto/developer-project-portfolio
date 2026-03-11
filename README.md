@@ -78,18 +78,18 @@ Database
 backend
  ├── public
  ├── src
- │   ├── Controllers
- │   ├── Services
- │   ├── Repositories
- │   └── Models
+ │   ├── Controller
+ │   ├── Service
+ │   ├── Repository
+ │   └── Model
 ```
 
 Responsibilities:
 
-* Controllers → handle HTTP requests
-* Services → business logic
-* Repositories → database access
-* Models → domain entities
+* Controller → handle HTTP requests
+* Service → business logic
+* Repository → database access
+* Model → domain entities
 
 ---
 
@@ -106,7 +106,7 @@ frontend
 
 Responsibilities:
 
-* Controllers → fetch data from API
+* Controller → fetch data from API
 * Twig templates → render views
 * CSS / JS → presentation and behaviour
 
