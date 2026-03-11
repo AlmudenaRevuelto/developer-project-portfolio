@@ -1,11 +1,21 @@
-<h1>My Projects</h1>
+{% extends "layout/base.twig" %}
 
-<ul>
-{% for project in projects %}
-    <li>
-        <a href="/projects/{{ project.id }}">
-            {{ project.name }}
-        </a>
-    </li>
-{% endfor %}
-</ul>
+{% block title %}
+Home | Developer Portfolio
+{% endblock %}
+
+{% block content %}
+
+<h2>My Projects</h2>
+
+<div class="projects-grid">
+
+    {% for project in projects %}
+        {% include "components/project-card.twig" with { project: project } %}
+    {% else %}
+        <p>No projects available.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

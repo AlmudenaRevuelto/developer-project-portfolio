@@ -1,0 +1,19 @@
+{% extends "layout/base.twig" %}
+
+{% block title %}
+Projects | Developer Portfolio
+{% endblock %}
+
+{% block content %}
+
+<h2>All Projects</h2>
+
+<div class="projects-grid">
+
+    {% for project in projects %}
+        {% include "components/project-card.twig" with { project: project } %}
+    {% endfor %}
+
+</div>
+
+{% endblock %}
