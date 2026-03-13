@@ -1,7 +1,11 @@
 <?php
 
-require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Service/ProjectService.php';
+namespace Backend\Controller;
+
+use Backend\Service\ProjectService;
+use Backend\Repository\ProjectRepository;
+use Backend\Repository\ClientRepository;
+use InvalidArgumentException;
 
 class ProjectController extends BaseController
 {
@@ -9,7 +13,10 @@ class ProjectController extends BaseController
 
     public function __construct()
     {
-        $this->projectService = new ProjectService();
+        $this->projectService = new ProjectService(
+            new ProjectRepository(),
+            new ClientRepository()
+        );
     }
 
     /**

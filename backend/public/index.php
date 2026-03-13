@@ -1,8 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../src/Router/Router.php';
-require_once __DIR__ . '/../src/Controller/ClientController.php';
-require_once __DIR__ . '/../src/Controller/ProjectController.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use Backend\Router\Router;
+use Backend\Controller\ClientController;
+use Backend\Controller\ProjectController;
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

@@ -1,7 +1,9 @@
 <?php
 
-require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Service/ClientService.php';
+namespace Backend\Controller;
+
+use Backend\Service\ClientService;
+use InvalidArgumentException;
 
 class ClientController extends BaseController
 {

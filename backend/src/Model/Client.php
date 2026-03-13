@@ -1,4 +1,6 @@
 <?php
+namespace Backend\Model;
+use JsonSerializable;
 
 class Client implements JsonSerializable
 {

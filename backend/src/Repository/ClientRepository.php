@@ -1,7 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../Model/Client.php';
-require_once __DIR__ . '/../../config/database.php';
+namespace Backend\Repository;
+use Backend\Config\Database;
+use Backend\Model\Client;
+use PDO;
 
 class ClientRepository
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Frontend\Controller;
 
-use App\Service\ApiService;
-use App\Core\View;
+use Frontend\Service\ApiService;
+use Frontend\Core\View;
 
 class ProjectController
 {

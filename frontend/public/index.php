@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use App\Router\Router;
-use App\Controller\HomeController;
-use App\Controller\ProjectController;
+use Frontend\Router\Router;
+use Frontend\Controller\HomeController;
+use Frontend\Controller\ProjectController;
 
 $router = new Router();
 

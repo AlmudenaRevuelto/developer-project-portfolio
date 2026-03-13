@@ -1,5 +1,7 @@
 <?php
 
+namespace Backend\Controller;
+
 abstract class BaseController
 {
     /**

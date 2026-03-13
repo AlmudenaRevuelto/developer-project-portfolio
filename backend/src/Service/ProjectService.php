@@ -1,18 +1,21 @@
 <?php
 
-require_once __DIR__ . '/../Repository/ProjectRepository.php';
-require_once __DIR__ . '/../Repository/ClientRepository.php';
-require_once __DIR__ . '/../Model/Project.php';
+namespace Backend\Service;
+use Backend\Repository\ProjectRepository;
+use Backend\Repository\ClientRepository;
+use Backend\Model\Project;
 
 class ProjectService
 {
     private ProjectRepository $projectRepository;
     private ClientRepository $clientRepository;
 
-    public function __construct()
-    {
-        $this->projectRepository = new ProjectRepository();
-        $this->clientRepository = new ClientRepository();
+    public function __construct(
+        ProjectRepository $projectRepository,
+        ClientRepository $clientRepository
+    ) {
+        $this->projectRepository = $projectRepository;
+        $this->clientRepository = $clientRepository;
     }
 
     /**

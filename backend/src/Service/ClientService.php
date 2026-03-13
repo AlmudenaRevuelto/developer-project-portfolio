@@ -1,7 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../Repository/ClientRepository.php';
-require_once __DIR__ . '/../Model/Client.php';
+namespace Backend\Service;
+use Backend\Repository\ClientRepository;
+use Backend\Model\Client;
 
 class ClientService
 {

@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__ . '/Client.php';
+namespace Backend\Model;
+use Backend\Model\Client;
+use JsonSerializable;
 
 class Project implements JsonSerializable
 {

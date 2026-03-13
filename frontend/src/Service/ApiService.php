@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace Frontend\Service;
 
 class ApiService
 {
