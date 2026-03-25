@@ -1,0 +1,33 @@
+{% extends "layout/base.twig" %}
+
+{% block title %}
+Projects | Developer Portfolio
+{% endblock %}
+
+{% block content %}
+
+<h2>GitHub Projects</h2>
+
+<div class="projects-grid">
+    {% for project in projects %}
+        <div class="project-card">
+            <h3>{{ project.name }}</h3>
+
+            <p>{{ project.description ?: 'No description available' }}</p>
+
+            <p><strong>Language:</strong> {{ project.language ?: 'Unknown' }}</p>
+            <p><strong>Stars:</strong> {{ project.stars }}</p>
+            <p><strong>Updated:</strong> {{ project.updated_at|date('d/m/Y') }}</p>
+
+            <div class="card-actions">
+                <a href="{{ project.url }}" target="_blank" class="btn">
+                    View on GitHub →
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <p>No projects available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

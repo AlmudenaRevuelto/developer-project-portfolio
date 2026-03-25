@@ -7,11 +7,16 @@ use Frontend\Service\GithubService;
 
 class HomeController
 {
+    private GithubService $githubService;
+
+    public function __construct()
+    {
+        $this->githubService = new GithubService();
+    }
+
     public function index()
     {
-        $github = new GithubService();
-
-        $user = $github->getUser('AlmudenaRevuelto');
+        $user = $this->githubService->getUser('AlmudenaRevuelto');
 
         return View::render('home/index.twig', [
             'user' => $user

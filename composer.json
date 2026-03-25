@@ -4,7 +4,6 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Backend\\": "backend/src/",
             "Frontend\\": "frontend/src/"
         }
     },
@@ -16,8 +15,5 @@
     "minimum-stability": "stable",
     "require": {
         "twig/twig": "^3.23"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^12.5"
     }
 }

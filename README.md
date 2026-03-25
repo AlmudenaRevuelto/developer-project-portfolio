@@ -1,61 +1,42 @@
 # Developer Project Portfolio
 
-Personal developer portfolio built with **PHP, Docker, MySQL and Twig** following an **MVC architecture**.
+Personal developer portfolio built with **PHP, Docker, Twig and the GitHub API**.
 
-This project acts as a **central hub for showcasing software projects**, allowing them to be organised, described and linked to their respective repositories or live demos.
+This project acts as a **central hub for showcasing GitHub profile and repositories**.
 
-The goal of this project is both:
-
-* to serve as a **technical portfolio**
-* and to demonstrate **backend architecture, API design and containerised development**
+The goal of this project is to serve as a **technical portfolio** with a lightweight MVC frontend that consumes public GitHub data.
 
 ---
 
 # Project Overview
 
-This application provides a system where **projects can be registered, managed and displayed**.
+This application renders:
 
-Each project can contain information such as:
+* GitHub user profile information on Home
+* GitHub repositories on Projects
 
-* name
-* description
-* programming language
-* framework
-* GitHub repository
-* live demo link
-* status
-
-The frontend renders project information using **Twig templates**, while the backend exposes a **REST API** that manages all data.
+The frontend consumes the public GitHub API directly and renders the data using **Twig templates**.
 
 ---
 
 # Tech Stack
 
-### Backend
-
-* PHP
-* REST API
-* MVC architecture
-* MySQL
-* PDO
-
 ### Frontend
 
+* PHP
 * Twig
 * HTML
 * CSS
 * Vanilla JavaScript
 
+### Data source
+
+* GitHub REST API
+
 ### Infrastructure
 
 * Docker
 * Apache
-* MySQL
-* phpMyAdmin
-
-### Tools
-
-* Postman (API testing)
 * Git / GitHub
 
 ---
@@ -67,29 +48,8 @@ The project is divided into two main layers:
 ```
 frontend
    ↓
-Backend API
-   ↓
-Database
+GitHub API
 ```
-
-### Backend
-
-```
-backend
- ├── public
- ├── src
- │   ├── Controller
- │   ├── Service
- │   ├── Repository
- │   └── Model
-```
-
-Responsibilities:
-
-* Controller → handle HTTP requests
-* Service → business logic
-* Repository → database access
-* Model → domain entities
 
 ---
 
@@ -106,7 +66,8 @@ frontend
 
 Responsibilities:
 
-* Controller → fetch data from API
+* Controller → fetch data from GitHub service
+* Service → call GitHub API and normalize responses
 * Twig templates → render views
 * CSS / JS → presentation and behaviour
 
@@ -133,51 +94,22 @@ http://localhost:8000
 
 ---
 
-# API Endpoints
-
-Example endpoints available in the backend API:
-
-```
-GET    /api/clients
-POST   /api/clients
-GET    /api/projects
-POST   /api/projects
-PUT    /api/projects/{id}
-DELETE /api/projects/{id}
-```
-
-The API can be tested using **Postman**.
-
----
-
-# Database
-
-Database schema is located in:
-
-```
-database/schema.sql
-```
-
-It is automatically loaded when the MySQL container starts.
-
----
-
 # Development Goals
 
 This project is intentionally built without large frameworks in order to:
 
-* better understand **backend architecture**
 * practise **clean MVC structure**
 * learn **Docker based development**
 * integrate **frontend templating with Twig**
+* consume an external API cleanly from a PHP application
 
 Future improvements will include:
 
-* project tagging / technologies
-* GitHub integration
+* repository filtering
+* pinned repositories
 * project screenshots
 * improved frontend interface
-* search and filtering
+* better error handling for API rate limits
 
 ---
 

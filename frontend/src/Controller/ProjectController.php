@@ -2,41 +2,24 @@
 
 namespace Frontend\Controller;
 
-use Frontend\Service\ApiService;
 use Frontend\Core\View;
+use Frontend\Service\GithubService;
 
 class ProjectController
 {
+    private GithubService $githubService;
+
+    public function __construct()
+    {
+        $this->githubService = new GithubService();
+    }
+
     public function index()
     {
-        $api = new ApiService();
+        $projects = $this->githubService->getRepositories('AlmudenaRevuelto');
 
-        $projects = $api->getProjects();
-
-        View::render('project/list.twig', [
+        return View::render('project/index.twig', [
             'projects' => $projects
-        ]);
-    }
-
-    public function list()
-    {
-        $api = new ApiService();
-
-        $projects = $api->getProjects();
-
-        View::render('project/list.twig', [
-            'projects' => $projects
-        ]);
-    }
-
-    public function show(int $id)
-    {
-        $api = new ApiService();
-
-        $project = $api->getProject($id);
-
-        View::render('project/show.twig', [
-            'project' => $project
         ]);
     }
 }
