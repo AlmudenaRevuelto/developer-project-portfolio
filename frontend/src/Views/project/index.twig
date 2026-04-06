@@ -6,6 +6,16 @@ Projects | Developer Portfolio
 
 {% block content %}
 
+{% set languageColors = {
+    'PHP': '#777BB4',
+    'JavaScript': '#f1e05a',
+    'TypeScript': '#3178c6',
+    'CSS': '#7fb3ff',
+    'SCSS': '#cf649a',
+    'Dockerfile': '#2496ED',
+    'Twig': '#84b819'
+} %}
+
 <h2>GitHub Projects</h2>
 
 <div class="projects-grid">
@@ -15,9 +25,25 @@ Projects | Developer Portfolio
 
             <p>{{ project.description ?: 'No description available' }}</p>
 
-            <p><strong>Language:</strong> {{ project.language ?: 'Unknown' }}</p>
+            {% if project.language is iterable and project.language|length > 0 %}
+                <div class="languages">
+                    <strong>Language:</strong>
+                    <div class="language-list">
+                        {% for language in project.language %}
+                            <span class="language-badge" style="background-color: {{ languageColors[language]|default('#ccc') }};">
+                                {{ language }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <p><strong>Language:</strong> Unknown</p>
+            {% endif %}
             <p><strong>Stars:</strong> {{ project.stars }}</p>
             <p><strong>Updated:</strong> {{ project.updated_at|date('d/m/Y') }}</p>
+            {% if project.homepage %}
+                <p><strong>Homepage:</strong> <a href="{{ project.homepage }}" target="_blank">{{ project.homepage }}</a></p>
+            {% endif %}
 
             <div class="card-actions">
                 <a href="{{ project.url }}" target="_blank" class="btn">

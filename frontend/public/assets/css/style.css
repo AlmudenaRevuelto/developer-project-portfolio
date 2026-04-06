@@ -4,11 +4,18 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
     color: #333;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -62,9 +69,11 @@ nav a:hover::after {
 }
 
 main {
+    flex: 1;
     padding: 60px 40px;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
 }
 
 /* Hero Section */
@@ -183,6 +192,31 @@ main {
     border-color: #4f46e5;
 }
 
+.languages {
+    margin-top: 10px;
+}
+
+.language-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.language-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.card-actions {
+    margin-top: 14px;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -220,7 +254,15 @@ footer {
     color: white;
     text-align: center;
     padding: 20px;
-    margin-top: 60px;
+    margin: 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+h2 {
+    margin-bottom: 20px;
 }
 
 @keyframes slideUp {
