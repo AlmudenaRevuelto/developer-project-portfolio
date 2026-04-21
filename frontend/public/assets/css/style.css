@@ -245,6 +245,16 @@ main {
     display: inline-flex;
 }
 
+.btn-demo {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+}
+
+.btn-demo:hover {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
 .page-actions {
     margin-top: 30px;
 }

@@ -49,6 +49,10 @@ class GithubService
         }
         
 
+        $demoUrl = ($owner !== '' && $name !== '')
+            ? $this->getDemoUrlFromReadme($owner, $name)
+            : null;
+
         return [
             'name' => $name,
             'description' => $repo['description'] ?? null,
@@ -57,7 +61,36 @@ class GithubService
             'stars' => $repo['stargazers_count'] ?? 0,
             'updated_at' => $repo['updated_at'] ?? null,
             'homepage' => $repo['homepage'] ?? null,
+            'demo_url' => $demoUrl,
         ];
+    }
+
+    private function getDemoUrlFromReadme(string $owner, string $repoName): ?string
+    {
+        $readme = $this->request("/repos/$owner/$repoName/readme");
+
+        if (empty($readme['content'])) {
+            return null;
+        }
+
+        $content = base64_decode(str_replace("\n", '', $readme['content']));
+
+        // Split into sections by markdown headers and find the demo section
+        $sections = preg_split('/(?=^#{1,4}\s)/m', $content);
+        foreach ($sections as $section) {
+            if (preg_match('/^#{1,4}\s[^\n]*demo/i', $section)) {
+                if (preg_match('/(https?:\/\/[^\s\)"\'<\]]+)/i', $section, $urlMatch)) {
+                    return $urlMatch[1];
+                }
+            }
+        }
+
+        // Fallback: any markdown link whose text mentions demo or watch
+        if (preg_match('/\[[^\]]*(?:demo|watch)[^\]]*\]\((https?:\/\/[^\)]+)\)/i', $content, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     private function getLanguages(string $username, string $repoName): array

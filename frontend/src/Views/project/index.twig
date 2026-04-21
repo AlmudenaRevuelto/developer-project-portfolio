@@ -11,6 +11,7 @@ Projects | Developer Portfolio
     'Java': '#b07219',
     'JavaScript': '#f1e05a',
     'TypeScript': '#3178c6',
+    'HTML': '#e34c26',
     'CSS': '#7fb3ff',
     'SCSS': '#cf649a',
     'Dockerfile': '#2496ED',
@@ -50,6 +51,11 @@ Projects | Developer Portfolio
                 <a href="{{ project.url }}" target="_blank" class="btn">
                     View on GitHub →
                 </a>
+                {% if project.demo_url %}
+                    <a href="{{ project.demo_url }}" target="_blank" class="btn btn-demo">
+                        Ver Demo →
+                    </a>
+                {% endif %}
             </div>
         </div>
     {% else %}

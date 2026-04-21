@@ -4,6 +4,8 @@ Personal developer portfolio built with **PHP, Docker, Twig and the GitHub API**
 
 This project acts as a **central hub for showcasing GitHub profile and repositories**.
 
+Each repository card displays the detected languages with color-coded badges and, when the repository README contains a **Demo** section, a direct link button to the demo video or URL.
+
 The goal of this project is to serve as a **technical portfolio** with a lightweight MVC frontend that consumes public GitHub data.
 
 ---
@@ -16,6 +18,8 @@ This application renders:
 * GitHub repositories on Projects
 
 The frontend consumes the public GitHub API directly and renders the data using **Twig templates**.
+
+For each repository, the service also fetches the README via the API and parses it to extract a demo URL if a `## Demo` section exists.
 
 ---
 
@@ -31,7 +35,7 @@ The frontend consumes the public GitHub API directly and renders the data using 
 
 ### Data source
 
-* GitHub REST API
+* GitHub REST API (repositories, languages, README content)
 
 ### Infrastructure
 
@@ -70,6 +74,7 @@ Responsibilities:
 * Service → call GitHub API and normalize responses
 * Twig templates → render views
 * CSS / JS → presentation and behaviour
+* README parser → extracts demo URLs from repository READMEs
 
 ---
 
@@ -110,6 +115,7 @@ Future improvements will include:
 * project screenshots
 * improved frontend interface
 * better error handling for API rate limits
+* optional `GITHUB_TOKEN` env variable to increase API rate limits
 
 ---
 
